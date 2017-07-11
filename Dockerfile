@@ -1,12 +1,10 @@
-FROM atlassian/default-image:latest
+FROM node:8.1-alpine
 
 MAINTAINER Mike Leo "mike@foundplaces.com"
 
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Install latest version of pip
-RUN curl -O https://bootstrap.pypa.io/get-pip.py && python get-pip.py
-
-# Install AWS CLI
-RUN pip install awscli awsebcli
-
+RUN \
+	mkdir -p /aws && \
+	apk -Uuv add groff less python py-pip && \
+	pip install awscli && \
+	apk --purge -v del py-pip && \
+	rm /var/cache/apk/*
